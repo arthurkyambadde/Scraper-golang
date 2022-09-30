@@ -1,20 +1,29 @@
-package readfile
+package readFile
 
 import (
+	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 )
 
-func readfile(fileName string) {
+var fileContent []string
 
-	fileContent, err := ioutil.ReadFile(fileName)
+func Readfile(fileName string) {
+
+	fileToBeRead, err := os.Open(fileName)
 
 	if err != nil {
 		log.Fatalf("%q has not been read", err)
+		return
 	}
+	defer fileToBeRead.Close()
 
-	fileData := string(fileContent)
+	scanner := bufio.NewScanner(fileToBeRead)
+	scanner.Split(bufio.ScanLines)
 
-	fmt.Println(fileData)
+	for scanner.Scan() {
+		fileContent = append(fileContent, scanner.Text())
+	}
+	fmt.Println(fileContent)
 }
