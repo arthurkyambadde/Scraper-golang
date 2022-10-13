@@ -1,9 +1,12 @@
 package main
 
 import (
-	readfile "webscrapper/readFile"
+	"fmt"
+	gethttprequest "webscrapper/getHttpRequest"
 )
 
 func main() {
-	readfile.Readfile("dummy.txt")
+	// readfile.Readfile("dummy.txt")
+	gethttprequest.Gethttprequest()
+	fmt.Println("hey am working")
 }
