@@ -1,4 +1,4 @@
-package readFile
+package readfile
 
 import (
 	"bufio"
@@ -10,9 +10,7 @@ import (
 var fileContent []string
 
 func Readfile(fileName string) {
-
 	fileToBeRead, err := os.Open(fileName)
-
 	if err != nil {
 		log.Fatalf("%q has not been read", err)
 		return
