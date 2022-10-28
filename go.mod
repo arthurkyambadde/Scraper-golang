@@ -1,6 +1,6 @@
 module webscrapper
 
-go 1.19
+go 1.17
 
 require github.com/gocolly/colly v1.2.0
 

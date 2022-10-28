@@ -1,19 +1,17 @@
-package readfile
+package readfsile
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 )
 
 var fileContent []string
 
-func Readfile(fileName string) {
+func Readfile(fileName string) []string {
 	fileToBeRead, err := os.Open(fileName)
 	if err != nil {
 		log.Fatalf("%q has not been read", err)
-		return
 	}
 	defer fileToBeRead.Close()
 
@@ -23,5 +21,6 @@ func Readfile(fileName string) {
 	for scanner.Scan() {
 		fileContent = append(fileContent, scanner.Text())
 	}
-	fmt.Println(fileContent)
+
+	return fileContent
 }

@@ -1,31 +1,32 @@
 package gethttprequest
 
 import (
+	"bufio"
 	"fmt"
-
-	"github.com/gocolly/colly"
+	"log"
+	"net/http"
 )
 
-func Gethttprequest() {
-	fmt.Println("worked")
-	collyLib := colly.NewCollector()
+func Gethttprequest(company string) string {
+	bodyHtml := ""
+	link := fmt.Sprintf("https://www.google.com/search?q=%s", company)
+	resp, err := http.Get(link)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 
-	// On every a element which has href attribute call callback
-	collyLib.OnHTML("a[href]", func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+	log.Println("Response status:", resp.Status)
 
-		// Print link
-		fmt.Printf("Link found: %q -> %s\n", e.Text, link)
+	scanner := bufio.NewScanner(resp.Body)
+	for i := 0; scanner.Scan() && i < 15; i++ {
+		bodyHtml = bodyHtml + scanner.Text()
+	}
 
-		// Visit link found on page
-		collyLib.Visit(e.Request.AbsoluteURL(link))
-	})
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
+	log.Println(bodyHtml)
 
-	// Before making a request print "Visiting ..."
-	collyLib.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL.String())
-	})
-
-	// Start scraping on through the link
-	collyLib.Visit("https://www.google.com/search?q=stanbic")
+	return bodyHtml
 }
